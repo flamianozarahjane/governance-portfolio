@@ -130,8 +130,10 @@ h4{font-size:.86rem;letter-spacing:.1em;text-transform:uppercase;color:var(--acc
 .card.wide{grid-column:1/-1}
 .thumb{position:relative;aspect-ratio:16/9;background:linear-gradient(140deg,#14304A,#2C6698);
   display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer}
+.card.wide .thumb{aspect-ratio:auto;min-height:230px}
 .thumb img{width:100%;height:100%;object-fit:cover}
 .thumb iframe{width:100%;height:100%;border:0;position:absolute;inset:0}
+.card.wide .thumb.playing{aspect-ratio:16/9;min-height:0}
 .play{width:62px;height:62px;border-radius:50%;background:rgba(255,255,255,.94);
   display:flex;align-items:center;justify-content:center;box-shadow:0 6px 22px rgba(0,0,0,.28);transition:.18s}
 .thumb:hover .play{transform:scale(1.09);background:#fff}
@@ -421,7 +423,7 @@ footer a{color:#BCD0E4}
 
       <!-- E -->
       <article class="card wide reveal">
-        <div class="thumb" data-yt="https://youtu.be/nSpFlNEAn0w" role="button" tabindex="0" aria-label="Watch the LMS governance walkthrough" style="aspect-ratio:auto;height:150px">
+        <div class="thumb" data-yt="https://youtu.be/nSpFlNEAn0w" role="button" tabindex="0" aria-label="Watch the LMS governance walkthrough">
           <div class="play"></div>
           <span class="soon">Walkthrough &middot; 2 min</span>
         </div>
@@ -598,7 +600,7 @@ footer a{color:#BCD0E4}
     <p>If you'd like a live screen-share of how any of these tools work, or a deeper walkthrough of the governance procedures — just say the word.</p>
     <div class="cgrid">
       <a class="btn btn-primary" href="mailto:zarahflamiano@gmail.com">&#9993; zarahflamiano@gmail.com</a>
-      <a class="btn btn-ghost" href="https://drive.google.com/file/d/1E4c4GDywJcS0-rCrFZU8L2uOc3ILyDF_/view?usp=sharing" target="_blank" rel="noopener noreferrer">&darr; View CV</a>
+      <a class="btn btn-ghost" href="https://drive.google.com/file/d/1RB5KqoKPNBfUwPenzGdvzhBanUA5CHmO/view?usp=sharing" target="_blank" rel="noopener noreferrer">&darr; View CV</a>
     </div>
   </div>
 </section>
@@ -625,7 +627,7 @@ document.querySelectorAll('.reveal').forEach(function(el, i){
   io.observe(el);
 });
 
-/* Accepts a full YouTube URL (youtu.be/ID, watch?v=ID, /embed/ID) or a bare ID */
+/* Accepts a full YouTube URL (youtu.be/ID, watch?v=ID, /embed/ID) or a bare 11-char ID */
 function getYouTubeId(value){
   if(!value) return null;
   var v = value.trim();
@@ -637,7 +639,7 @@ function getYouTubeId(value){
 
 function playVideo(el){
   var id = getYouTubeId(el.getAttribute('data-yt'));
-  if(!id){ return; }
+  if(!id) return;
   var card = el.closest('.card');
   var thumb = card.querySelector('.thumb');
   if(!thumb){
@@ -645,7 +647,7 @@ function playVideo(el){
     thumb.className = 'thumb';
     card.insertBefore(thumb, card.firstChild);
   }
-  thumb.removeAttribute('style');
+  thumb.classList.add('playing');
   thumb.innerHTML = '<iframe src="https://www.youtube.com/embed/' + id +
     '?autoplay=1&rel=0" title="Demo video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
   thumb.scrollIntoView({ behavior:'smooth', block:'center' });
